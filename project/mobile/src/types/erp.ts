@@ -79,7 +79,7 @@ export interface Product {
   pod_compatibility: string[];
   product_type: string | null;
   is_age_restricted: boolean;
-  nicotine_strength_mg: number | null;
+  nicotine_strength: string | null;
 }
 
 export interface ProductWithRelations extends Product {

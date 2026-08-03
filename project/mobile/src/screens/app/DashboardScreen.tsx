@@ -62,7 +62,7 @@ export default function DashboardScreen() {
   const queryClient = useQueryClient();
 
   const summaryQuery = useDashboardSummary();
-  const notificationsQuery = useRecentNotifications(5);
+  const notificationsQuery = useRecentNotifications(profile?.id, 5);
 
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = useCallback(async () => {

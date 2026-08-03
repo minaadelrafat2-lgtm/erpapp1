@@ -6,10 +6,11 @@ import {
   fetchProductById,
   fetchCategories,
   type ProductListResult,
+  type ProductListItem,
 } from '@services/erpService';
 import { APP_CONFIG } from '@constants';
 import type { DashboardSummary, ERPNotification, Category } from '@apptypes/erp';
-import type { Product, ProductDetail } from '@apptypes/erp';
+import type { ProductDetail } from '@apptypes/erp';
 
 // ============================================================
 // Query Keys
@@ -36,10 +37,11 @@ export function useDashboardSummary() {
   });
 }
 
-export function useRecentNotifications(limit = 5) {
+export function useRecentNotifications(userId: string | null | undefined, limit = 5) {
   return useQuery<ERPNotification[]>({
     queryKey: erpKeys.notifications(limit),
-    queryFn: () => fetchRecentNotifications(limit),
+    queryFn: () => fetchRecentNotifications(userId!, limit),
+    enabled: !!userId,
     staleTime: 30_000,
   });
 }
@@ -72,6 +74,8 @@ export function useProduct(id: string | null) {
     staleTime: 60_000,
   });
 }
+
+export type { ProductListItem, ProductListResult };
 
 // ============================================================
 // Category Hooks

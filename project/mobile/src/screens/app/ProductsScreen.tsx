@@ -8,6 +8,7 @@ import {
   TextInput,
   RefreshControl,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { ScreenWrapper } from '@components/ScreenWrapper';
 import { AppHeader } from '@components/AppHeader';
@@ -20,7 +21,7 @@ import { useResponsive, getCardWidth } from '@hooks/useResponsive';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getIconName } from '@config/icons';
-import type { Product } from '@apptypes/erp';
+import type { ProductListItem } from '@hooks/useERP';
 
 const DEBOUNCE_MS = 300;
 
@@ -70,7 +71,7 @@ export default function ProductsScreen() {
     return colors.success;
   };
 
-  const renderItem = ({ item }: { item: Product & { category_name: string | null; brand_name: string | null } }) => {
+  const renderItem = ({ item }: { item: ProductListItem }) => {
     const stockColor = getStockColor(item.stock, item.low_stock_threshold);
     const stockLabel = item.stock <= 0 ? 'Out of stock' : item.stock <= item.low_stock_threshold ? `Low: ${item.stock}` : `${item.stock} in stock`;
 
@@ -81,7 +82,9 @@ export default function ProductsScreen() {
         onPress={() => router.push({ pathname: '/(app)/products/[id]', params: { id: item.id } } as never)}
       >
         <View style={[styles.productImageBox, { backgroundColor: colors.surfaceElevated }]}>
-          {item.barcode ? (
+          {item.image_url ? (
+            <Image source={{ uri: item.image_url }} style={styles.productImage} resizeMode="cover" />
+          ) : item.barcode ? (
             <MaterialCommunityIcons name="barcode-scan" size={36} color={colors.textMuted} />
           ) : (
             <MaterialCommunityIcons name="package-variant-closed" size={36} color={colors.textMuted} />
@@ -231,7 +234,8 @@ const styles = StyleSheet.create({
   categoryChipText: { fontSize: 13, fontWeight: '500' },
   productList: { gap: 12, paddingBottom: 24 },
   productCard: { borderRadius: 12, borderWidth: 1, overflow: 'hidden' },
-  productImageBox: { height: 100, alignItems: 'center', justifyContent: 'center' },
+  productImageBox: { height: 100, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
+  productImage: { width: '100%', height: '100%' },
   productInfo: { padding: 12, gap: 4 },
   productName: { fontSize: 14, fontWeight: '600', lineHeight: 18 },
   productCategory: { fontSize: 12 },

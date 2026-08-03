@@ -150,8 +150,8 @@ export default function ProductDetailScreen() {
             {product.flavor && (
               <InfoRow label="Flavor" value={product.flavor} icon="star" colors={colors} />
             )}
-            {product.nicotine_strength_mg != null && (
-              <InfoRow label="Nicotine" value={`${product.nicotine_strength_mg}mg`} icon="alert" colors={colors} />
+            {product.nicotine_strength && (
+              <InfoRow label="Nicotine Strength" value={product.nicotine_strength} icon="alert" colors={colors} />
             )}
             {product.puff_count != null && (
               <InfoRow label="Puff Count" value={String(product.puff_count)} icon="clock" colors={colors} />
